@@ -34,4 +34,3 @@ Book-Fair-Reservation-System/
     └── user-app/
         └── (User application)
 ```
-
