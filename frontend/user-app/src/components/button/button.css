@@ -1,0 +1,23 @@
+.btn {
+	transition: background-color .15s ease, transform .08s ease, box-shadow .12s ease;
+}
+
+.btn:active {
+	transform: translateY(1px);
+}
+
+.btn:focus {
+	outline: none;
+	box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.btn {
+		transition: none;
+	}
+}

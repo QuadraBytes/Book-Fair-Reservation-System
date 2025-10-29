@@ -1,0 +1,47 @@
+.step-image-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.step-section {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.step-image-blur {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* make the blur a bit larger than the image so it reads like a border */
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  /* transparent center, darker orange near inner edge, brighter orange outward -> blurred to form a soft gradient border */
+  background: radial-gradient(circle at center,
+    rgba(255,255,255,0) 6%,
+    rgba(153,52,4,0.65) 36%,
+    rgba(255,122,0,0.28) 82%,
+    rgba(255,122,0,0) 100%
+  );
+  filter: blur(28px);
+  border-radius: 16px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.step-img {
+  position: relative;
+  z-index: 10;
+  border-radius: 12px;
+  display: block;
+}
+
+.step-number {
+  font-weight: 600;
+  color: #6b021e; 
+}
+
+@media (max-width: 768px) {
+  .step-image-blur { width: calc(100% + 32px); height: calc(100% + 32px); filter: blur(22px); border-radius: 12px; }
+}
