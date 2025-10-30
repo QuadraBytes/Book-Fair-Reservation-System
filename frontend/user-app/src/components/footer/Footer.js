@@ -7,7 +7,7 @@ function Footer() {
     <footer
       className="relative bg-cover bg-center text-white py-20"
       style={{
-        backgroundImage: "url('/footer%20img.jpg')",
+        backgroundImage: "url('home-footer.png')",
       }}
     >
       {/* Overlay for dim effect */}

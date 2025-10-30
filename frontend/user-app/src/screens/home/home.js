@@ -48,7 +48,7 @@ function Home() {
 
                 {/* Main hero image clipped by curved path */}
                 <image
-                    href="/footer%20img.jpg"
+                    href="home-background.png"
                     width="1500"
                     height="600"
                     clipPath="url(#heroClip)"
@@ -81,20 +81,20 @@ function Home() {
                 step="01"
                 title="Choose Your Stall"
                 description="Browse the available spaces and select the perfect spot for your book display at the fair."
-                image="/footer%20img.jpg"
+                image="book-fair-table.png"
             />
             <StepSection
                 step="02"
                 title="Add Your Details"
                 description="Provide essential information such as exhibitor name, contact details, and stall preferences."
-                image="/footer%20img.jpg"
+                image="home-open-book.png"
                 reverse
             />
             <StepSection
                 step="03"
                 title="Get QR Access"
                 description="Receive a unique QR code for instant entry and management of your reserved stalls at the event."
-                image="/footer%20img.jpg"
+                image="home-book-stall.png"
             />
 
             {/* Footer component */}
