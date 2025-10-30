@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-const UserSignIn = () => {
+const UserLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { email, password, confirmPassword });
+    console.log('Form submitted:', { email, password });
   };
 
   return (
@@ -25,7 +24,7 @@ const UserSignIn = () => {
       <div className="flex-1 bg-gray-100 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <h2 className="text-4xl font-light mb-12 text-center text-gray-800 font-serif">
-            Sign In
+            Login
           </h2>
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -57,34 +56,20 @@ const UserSignIn = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="confirmPassword" className="text-base text-gray-800 font-normal">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                className="px-5 py-3.5 text-base border border-gray-300 rounded-full outline-none transition-colors duration-300 bg-white focus:border-orange-700"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-
             <button 
               type="submit" 
               className="mt-4 px-8 py-3.5 text-base font-medium text-white bg-orange-700 border-none rounded-full cursor-pointer transition-all duration-300 hover:bg-orange-800 hover:-translate-y-0.5 active:translate-y-0"
             >
-              Sign In
+              Login
             </button>
 
             <p className="text-center mt-6 text-sm text-gray-600">
-              Already have an account?{' '}
+              Don't have an account?{' '}
               <a 
-                href="/login" 
+                href="/signin" 
                 className="text-orange-700 no-underline font-medium transition-colors duration-300 hover:text-orange-800 hover:underline"
               >
-                Login
+                Sign In
               </a>
             </p>
           </form>
@@ -94,4 +79,4 @@ const UserSignIn = () => {
   );
 };
 
-export default UserSignIn;
+export default UserLogin;
