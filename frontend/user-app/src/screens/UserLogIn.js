@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const UserLogin = () => {
+const UserLogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -79,4 +79,4 @@ const UserLogin = () => {
   );
 };
 
-export default UserLogin;
+export default UserLogIn;

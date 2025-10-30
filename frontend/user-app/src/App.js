@@ -1,12 +1,15 @@
 import './App.css';
 import Home from './screens/home/home';
-import UserLogin from './screens/UserLogIn';
+import StallBooking from './screens/StallBooking';
+import UserLogIn from './screens/UserLogIn';
 import UserSignIn from './screens/UserSignIn';
 
 function App() {
   return (
     <div >
-    <UserLogin/>
+      { <UserSignIn />}
+      {/* { <UserLogIn /> } */}
+      {/* StallBooking /> */}
     </div>
   );
 }
