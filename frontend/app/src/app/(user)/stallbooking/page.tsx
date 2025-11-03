@@ -53,7 +53,7 @@ const handleStallClick = (index: number) => {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="flex justify-between items-center px-8 py-6 border-b border-gray-200">
-        <h1 className="text-2xl font-light tracking-widest uppercase font-serif">
+        <h1 className="text-2xl font-light tracking-widest uppercase font-serif text-black">
           COLOMBO BOOK FAIR
         </h1>
         <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center cursor-pointer">

@@ -4,8 +4,16 @@ import React from "react";
 import Button from "@/components/button";
 import StepSection from "@/components/stepSection";
 import Footer from "@/components/footer"; 
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const HomePagePublic: React.FC = () => {
+const router = useRouter();
+  const handleStallBooking= () =>{
+  //   router.replace("/stallbooking");
+    router.replace("/stallbooking");
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-white">
       {/* HERO SECTION */}
@@ -50,6 +58,15 @@ const HomePagePublic: React.FC = () => {
             clipPath="url(#heroClip)"
             preserveAspectRatio="xMidYMid slice"
           />
+          {/* <Image
+  src="/home-footer.png"
+  alt="Footer background"
+  width={1500}
+  height={600}
+  className="w-full h-auto object-cover -z-10 absolute inset-0"
+/>
+ */}
+
 
           <rect x="0" y="0" width="1500" height="600" clipPath="url(#heroClip)" fill="rgba(0,0,0,0.35)" />
         </svg>
@@ -65,7 +82,7 @@ const HomePagePublic: React.FC = () => {
         {/* Curve blur + center button */}
         <div className="absolute bottom-0 left-0 right-0 flex h-[220px] items-center justify-center">
           <div className="absolute -top-12 h-[200px] w-[380px] rounded-full bg-orange-500/40 blur-[60px]" />
-          <Button variant="orange" className="z-20">
+          <Button variant="orange" className="z-20" onClick={handleStallBooking}>
             Book Your Stall
           </Button>
         </div>

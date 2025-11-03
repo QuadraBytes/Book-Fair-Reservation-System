@@ -2,16 +2,21 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/button";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", { email, password });
+    router.replace("/home");
   };
-
+  // const handleLogin = () =>{
+  //   router.replace("/stallbooking");
+  // }
   return (
     <div className="flex min-h-screen w-full">
       {/* Left with Image fill */}
@@ -47,7 +52,7 @@ const LoginPage = () => {
               <input
                 type="email"
                 id="email"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base text-gray-900 outline-none transition-colors duration-300 focus:border-orange-700"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -55,29 +60,21 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-base font-normal text-gray-800">
+              <label htmlFor="password" className="text-base font-normal text-gray-950">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base text-gray-900 outline-none transition-colors duration-300 focus:border-orange-700"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-
-            {/* <button
-              type="submit"
-              className="mt-4 cursor-pointer rounded-full border-none bg-orange-700 px-8 py-3.5 text-base font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-800 active:translate-y-0"
-            >
-              Login
-            </button> */}
-            <Button variant="orange" className="z-20">
+            <Button variant="orange" className="z-20" onClick={() =>{}}>
             Login
           </Button>
-
             <p className="mt-6 text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <a
