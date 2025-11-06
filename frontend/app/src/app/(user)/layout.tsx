@@ -1,4 +1,3 @@
-// components/public-layout.tsx
 "use client";
 
 export default function PublicLayout({
