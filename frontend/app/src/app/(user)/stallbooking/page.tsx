@@ -3,15 +3,10 @@ import React, { useState } from "react";
 
 const StallBookingPage = () => {
   const [stalls, setStalls] = useState([
-    // Row 1
     "available", "available", "available", "available", "available", "available", "available", "not-available",
-    // Row 2
     "available", "available", "available", "available", "available", "available", "available", "available",
-    // Row 3
     "available", "not-available", "available", "selected", "selected", "available", "available", "available",
-    // Row 4
     "available", "not-available", "available", "available", "available", "available", "available", "available",
-    // Row 5
     "available", "available", "available", "available", "available", "available", "available", "available",
   ]);
 const handleStallClick = (index: number) => {

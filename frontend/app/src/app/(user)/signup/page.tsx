@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/button";
+import { useRouter } from "next/navigation";
 
 const SignUpPage: React.FC = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,14 +13,14 @@ const SignUpPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", { email, password, confirmPassword });
+    router.replace("/stallbooking");
   };
 
   return (
     <div className="flex min-h-screen w-full">
-      {/* Left Side — Background with next/image */}
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         <Image
-          src="/sign-in-background.png" // must be in /public
+          src="/images/sign-in-background.png"
           alt="Books backdrop"
           fill
           priority
@@ -33,17 +35,18 @@ const SignUpPage: React.FC = () => {
         </h1>
       </div>
 
-      {/* Right Side — Sign Up Form */}
-      <div className="flex flex-1 items-center justify-center bg-gray-100 p-8">
+      <div className="flex flex-1 items-center justify-center bg-white p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
             Sign Up
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            {/* Email */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-base font-normal text-gray-800">
+              <label
+                htmlFor="email"
+                className="text-base font-normal text-gray-800"
+              >
                 Email
               </label>
               <input
@@ -59,7 +62,10 @@ const SignUpPage: React.FC = () => {
 
             {/* Password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-base font-normal text-gray-800">
+              <label
+                htmlFor="password"
+                className="text-base font-normal text-gray-800"
+              >
                 Password
               </label>
               <input
@@ -75,7 +81,10 @@ const SignUpPage: React.FC = () => {
 
             {/* Confirm Password */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="confirmPassword" className="text-base font-normal text-gray-800">
+              <label
+                htmlFor="confirmPassword"
+                className="text-base font-normal text-gray-800"
+              >
                 Confirm Password
               </label>
               <input
@@ -91,8 +100,8 @@ const SignUpPage: React.FC = () => {
 
             {/* Submit Button */}
             <Button variant="orange" className="z-20">
-            Sign Up
-          </Button>
+              Sign Up
+            </Button>
 
             {/* Redirect Link */}
             <p className="mt-6 text-center text-sm text-gray-600">

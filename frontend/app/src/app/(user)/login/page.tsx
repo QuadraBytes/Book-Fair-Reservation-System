@@ -12,14 +12,14 @@ const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", { email, password });
-    router.replace("/home");
+    router.replace("/stallbooking");
   };
 
   return (
     <div className="flex min-h-screen w-full">
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         <Image
-          src="/sign-in-background.png"
+          src="/images/sign-in-background.png"
           alt="Sign in background"
           fill
           priority
@@ -34,8 +34,7 @@ const LoginPage = () => {
         </h1>
       </div>
 
-      {/* Right form */}
-      <div className="flex flex-1 items-center justify-center bg-gray-100 p-8">
+      <div className="flex flex-1 items-center justify-center bg-white p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
             Login

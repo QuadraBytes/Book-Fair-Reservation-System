@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const router = useRouter();
 
    const handleRoute = () =>{
-    router.replace("/stallbooking");
+    router.replace("/login");
   }
   return (
     <footer

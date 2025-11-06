@@ -11,7 +11,7 @@ import Hero from "@/components/hero";
 const HomePagePublic: React.FC = () => {
   const router = useRouter();
   const handleStallBooking = () => {
-    router.replace("/stallbooking");
+    router.replace("/login");
   };
 
   return (
