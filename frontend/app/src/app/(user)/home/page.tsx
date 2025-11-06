@@ -15,7 +15,7 @@ const HomePagePublic: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 to-pink-50 ">
       <section className="relative flex h-[90vh] flex-col items-center justify-center overflow-hidden text-center text-white mb-20">
         <Hero />
       </section>

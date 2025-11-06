@@ -1,26 +1,62 @@
 "use client";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import React, { useState } from "react";
 
 const StallBookingPage = () => {
   const [stalls, setStalls] = useState([
-    "available", "available", "available", "available", "available", "available", "available", "not-available",
-    "available", "available", "available", "available", "available", "available", "available", "available",
-    "available", "not-available", "available", "selected", "selected", "available", "available", "available",
-    "available", "not-available", "available", "available", "available", "available", "available", "available",
-    "available", "available", "available", "available", "available", "available", "available", "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "not-available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "not-available",
+    "available",
+    "selected",
+    "selected",
+    "available",
+    "available",
+    "available",
+    "available",
+    "not-available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
+    "available",
   ]);
-const handleStallClick = (index: number) => {
-  const newStalls = [...stalls];
-  if (newStalls[index] === "available") {
-    newStalls[index] = "selected";
-  } else if (newStalls[index] === "selected") {
-    newStalls[index] = "available";
-  }
-  setStalls(newStalls);
-};
+  const handleStallClick = (index: number) => {
+    const newStalls = [...stalls];
+    if (newStalls[index] === "available") {
+      newStalls[index] = "selected";
+    } else if (newStalls[index] === "selected") {
+      newStalls[index] = "available";
+    }
+    setStalls(newStalls);
+  };
 
-
-  const getStallColor = (status:string) => {
+  const getStallColor = (status: string) => {
     switch (status) {
       case "selected":
         return "bg-orange-700";
@@ -45,34 +81,15 @@ const handleStallClick = (index: number) => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="flex justify-between items-center px-8 py-6 border-b border-gray-200">
-        <h1 className="text-2xl font-light tracking-widest uppercase font-serif text-black">
-          COLOMBO BOOK FAIR
-        </h1>
-        <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center cursor-pointer">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-pink-50">
+      <Header />
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-8 py-12">
+      <main className="max-w-4xl mx-auto px-8 py-12 pt-24">
         <h2 className="text-3xl font-light text-center mb-12 text-gray-800 font-serif">
           Event Map
         </h2>
 
-        <div className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-3xl p-12 shadow-lg mb-8">
+        <div className="bg-white rounded-3xl p-12 shadow-lg mb-8">
           <div className="grid grid-cols-8 gap-4">
             {stalls.map((status, index) => (
               <button
@@ -94,7 +111,6 @@ const handleStallClick = (index: number) => {
           </div>
         </div>
 
-        {/* Legend + Button */}
         <div className="flex justify-between items-center">
           <div className="flex gap-8">
             <div className="flex items-center gap-2">
@@ -119,6 +135,8 @@ const handleStallClick = (index: number) => {
           </button>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

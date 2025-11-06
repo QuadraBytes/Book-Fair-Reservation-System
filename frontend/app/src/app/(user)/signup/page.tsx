@@ -35,7 +35,7 @@ const SignUpPage: React.FC = () => {
         </h1>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-white p-8">
+      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50 p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
             Sign Up

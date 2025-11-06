@@ -34,7 +34,7 @@ const LoginPage = () => {
         </h1>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-white p-8">
+      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50  p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
             Login
@@ -42,7 +42,10 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-base font-normal text-gray-800">
+              <label
+                htmlFor="email"
+                className="text-base font-normal text-gray-800"
+              >
                 Email
               </label>
               <input
@@ -56,7 +59,10 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-base font-normal text-gray-950">
+              <label
+                htmlFor="password"
+                className="text-base font-normal text-gray-950"
+              >
                 Password
               </label>
               <input
@@ -68,9 +74,9 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <Button variant="orange" className="z-20" onClick={() =>{}}>
-            Login
-          </Button>
+            <Button variant="orange" className="z-20" onClick={() => {}}>
+              Login
+            </Button>
             <p className="mt-6 text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <a
