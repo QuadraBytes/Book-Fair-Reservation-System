@@ -1,0 +1,79 @@
+
+
+# ========================
+# IntelliJ / JetBrains IDEs
+# ========================
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ========================
+# Flutter / Android
+# ========================
+build/
+.gradle/
+.cxx/
+local.properties
+*.log
+
+# Android Studio navigation editor temp files
+.navigation/
+
+# ========================
+# Node / React Native
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.expo/
+.expo-shared/
+dist/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Metro / bundler cache
+.metro-cache/
+.packager/
+*.bundle
+
+# ========================
+# Python (if used for backend)
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ========================
+# OS & Editor junk
+# ========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+# ========================
+# VSCode / Other IDEs
+# ========================
+.vscode/
+*.code-workspace
+
+# ========================
+# Logs / Temporary files
+# ========================
+logs/
+*.log
+temp/
+tmp/
