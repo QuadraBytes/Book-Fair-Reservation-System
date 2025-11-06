@@ -14,15 +14,12 @@ const LoginPage = () => {
     console.log("Form submitted:", { email, password });
     router.replace("/home");
   };
-  // const handleLogin = () =>{
-  //   router.replace("/stallbooking");
-  // }
+
   return (
     <div className="flex min-h-screen w-full">
-      {/* Left with Image fill */}
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         <Image
-          src="/sign-in-background.png"   // in /public
+          src="/sign-in-background.png"
           alt="Sign in background"
           fill
           priority
