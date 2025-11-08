@@ -5,24 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "userdetails")
+@Table(name = "userdetails",schema = "quadrabytes")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
-    // Relationship with User
-    @OneToOne
-    @JoinColumn(name = "userid", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(nullable = false)
     private String username;
