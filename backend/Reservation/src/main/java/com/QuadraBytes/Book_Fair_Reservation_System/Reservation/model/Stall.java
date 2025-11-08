@@ -5,18 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "stall")
+@Table(name = "stall", schema = "quadrabytes")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Stall {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @UuidGenerator
     @Column(name = "stall_id")
-    private Long stallId;
+    private UUID stallId;
 
     @Column(nullable = false)
     private String type;

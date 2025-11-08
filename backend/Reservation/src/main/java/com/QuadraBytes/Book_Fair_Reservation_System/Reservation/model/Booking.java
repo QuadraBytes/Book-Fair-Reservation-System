@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "booking")
+@Table(name = "booking", schema = "quadrabytes")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,18 +19,15 @@ import java.time.LocalDateTime;
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
-    // Relationship with Stall
-    @ManyToOne
-    @JoinColumn(name = "stall_id", nullable = false)
-    private Stall stall;
+    @Column(name = "stall_id", nullable = false)
+    private UUID stallId;
 
-    // Relationship with User
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
