@@ -3,7 +3,7 @@
 # ========================
 # IntelliJ / JetBrains IDEs
 # ========================
-.idea/
+**/.idea/
 *.iml
 *.ipr
 *.iws
