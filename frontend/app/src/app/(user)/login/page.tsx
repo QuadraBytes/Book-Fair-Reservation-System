@@ -12,17 +12,14 @@ const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", { email, password });
-    router.replace("/home");
+    router.replace("/stallbooking");
   };
-  // const handleLogin = () =>{
-  //   router.replace("/stallbooking");
-  // }
+
   return (
     <div className="flex min-h-screen w-full">
-      {/* Left with Image fill */}
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         <Image
-          src="/sign-in-background.png"   // in /public
+          src="/images/sign-in-background.png"
           alt="Sign in background"
           fill
           priority
@@ -37,8 +34,7 @@ const LoginPage = () => {
         </h1>
       </div>
 
-      {/* Right form */}
-      <div className="flex flex-1 items-center justify-center bg-gray-100 p-8">
+      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50  p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
             Login
@@ -46,7 +42,10 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-base font-normal text-gray-800">
+              <label
+                htmlFor="email"
+                className="text-base font-normal text-gray-800"
+              >
                 Email
               </label>
               <input
@@ -60,7 +59,10 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="text-base font-normal text-gray-950">
+              <label
+                htmlFor="password"
+                className="text-base font-normal text-gray-950"
+              >
                 Password
               </label>
               <input
@@ -72,9 +74,9 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <Button variant="orange" className="z-20" onClick={() =>{}}>
-            Login
-          </Button>
+            <Button variant="orange" className="z-20" onClick={() => {}}>
+              Login
+            </Button>
             <p className="mt-6 text-center text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <a
