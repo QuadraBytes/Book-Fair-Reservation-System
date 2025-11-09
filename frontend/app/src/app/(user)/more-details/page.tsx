@@ -4,6 +4,7 @@ import Image from "next/image";
 import Button from "@/components/button";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/footer";
+import Header from "@/components/header";
 
 const AddDetailsPage: React.FC = () => {
   const router = useRouter();
@@ -20,28 +21,8 @@ const AddDetailsPage: React.FC = () => {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col">
-      {/* Header */}
-      <header className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-12 py-8">
-        <h1 className="font-serif text-3xl font-light uppercase tracking-wider text-gray-800">
-          COLOMBO BOOK FAIR
-        </h1>
-        
-        <button className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 transition-colors duration-300 hover:bg-gray-700">
-          <svg
-            className="h-6 w-6 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </header>
+      <Header />
 
-      {/* Main Content */}
       <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50 pt-32 pb-16">
         <div className="w-full max-w-3xl px-8">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
@@ -51,7 +32,6 @@ const AddDetailsPage: React.FC = () => {
           <div className="rounded-3xl bg-white px-12 py-10 shadow-xl">
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Company */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="company"
@@ -69,7 +49,6 @@ const AddDetailsPage: React.FC = () => {
                   />
                 </div>
 
-                {/* Contact */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="contact"
@@ -87,7 +66,6 @@ const AddDetailsPage: React.FC = () => {
                   />
                 </div>
 
-                {/* Type */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="type"
@@ -105,7 +83,6 @@ const AddDetailsPage: React.FC = () => {
                   />
                 </div>
 
-                {/* Social */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="social"
@@ -124,7 +101,6 @@ const AddDetailsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Location (Full Width) */}
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="location"
@@ -142,7 +118,6 @@ const AddDetailsPage: React.FC = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <div className="mt-4 flex justify-center">
                 <Button variant="orange" className="z-20 min-w-[200px] font-serif">
                   Submit
