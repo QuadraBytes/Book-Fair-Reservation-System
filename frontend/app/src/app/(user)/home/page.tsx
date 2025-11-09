@@ -30,25 +30,27 @@ const HomePagePublic: React.FC = () => {
         </Button>
       </div>
 
-      <StepSection
-        step={1}
-        title="Choose Your Stall"
-        description="Browse the available spaces and select the perfect spot for your book display at the fair."
-        image="/images/book-fair-table.png"
-      />
-      <StepSection
-        step={2}
-        title="Add Your Details"
-        description="Provide essential information such as exhibitor name, contact details, and stall preferences."
-        image="/images/home-open-book.png"
-        reverse
-      />
-      <StepSection
-        step={3}
-        title="Get QR Access"
-        description="Receive a unique QR code for instant entry and management of your reserved stalls at the event."
-        image="/images/home-book-stall.png"
-      />
+      <div className="pb-10">
+        <StepSection
+          step={1}
+          title="Choose Your Stall"
+          description="Browse the available spaces and select the perfect spot for your book display at the fair."
+          image="/images/book-fair-table.png"
+        />
+        <StepSection
+          step={2}
+          title="Add Your Details"
+          description="Provide essential information such as exhibitor name, contact details, and stall preferences."
+          image="/images/home-open-book.png"
+          reverse
+        />
+        <StepSection
+          step={3}
+          title="Get QR Access"
+          description="Receive a unique QR code for instant entry and management of your reserved stalls at the event."
+          image="/images/home-book-stall.png"
+        />
+      </div>
 
       <Footer />
     </div>

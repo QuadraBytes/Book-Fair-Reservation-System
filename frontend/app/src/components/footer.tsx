@@ -4,15 +4,14 @@ import Button from "@/components/button";
 import { useRouter } from "next/navigation";
 
 const Footer: React.FC = () => {
-
   const router = useRouter();
 
-   const handleRoute = () =>{
+  const handleRoute = () => {
     router.replace("/login");
-  }
+  };
   return (
     <footer
-      className="relative bg-cover bg-center text-white pt-15 mt-20"
+      className="relative bg-cover bg-center text-white pt-12"
       style={{
         backgroundImage: "url('/images/home-footer.png')",
       }}
@@ -24,7 +23,11 @@ const Footer: React.FC = () => {
           COLOMBO BOOK FAIR
         </h1>
 
-        <Button variant="white" className="px-6 py-2 rounded-full font-medium cursor-pointer" onClick={handleRoute}>
+        <Button
+          variant="white"
+          className="px-6 py-2 rounded-full font-medium cursor-pointer"
+          onClick={handleRoute}
+        >
           Book Your Stall
         </Button>
 
