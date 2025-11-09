@@ -1,6 +1,6 @@
 "use client";
 import AdminDashboard from "../admin/dashboard/page";
 
-export default function HomePage() {
+export default function AdminDashboardPage() {
   return <AdminDashboard />;
 }

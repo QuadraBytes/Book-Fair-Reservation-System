@@ -85,7 +85,7 @@ const StallBookingPage = () => {
       <Header />
 
       <main className="max-w-4xl mx-auto px-8 py-12 pt-24">
-        <h2 className="text-3xl font-light text-center mb-12 text-gray-800 font-serif">
+        <h2 className="text-3xl font-light text-center mb-4 text-gray-800 font-serif">
           Event Map
         </h2>
 

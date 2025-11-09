@@ -1,6 +1,6 @@
 "use client";
 
-export default function PublicLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
