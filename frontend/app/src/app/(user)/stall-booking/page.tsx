@@ -89,7 +89,7 @@ const StallBookingPage = () => {
           Event Map
         </h2>
 
-        <div className="bg-white rounded-3xl p-12 shadow-lg mb-8">
+        <div className="bg-white rounded-3xl p-12 mb-8 shadow-[0_20px_60px_rgba(255,122,0,0.12)]">
           <div className="grid grid-cols-8 gap-4">
             {stalls.map((status, index) => (
               <button
