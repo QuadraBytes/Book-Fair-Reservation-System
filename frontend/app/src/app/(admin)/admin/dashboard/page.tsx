@@ -86,7 +86,7 @@ const AdminDashBoard = () => {
 
       <main className="max-w-4xl mx-auto px-8 py-12 pt-24">
         <h2 className="text-3xl font-light text-center mb-12 text-gray-800 font-serif">
-          Event Mapppppppppppppp
+          Event Map
         </h2>
 
         <div className="bg-white rounded-3xl p-12 shadow-lg mb-8">
@@ -135,8 +135,6 @@ const AdminDashBoard = () => {
           </button>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };
