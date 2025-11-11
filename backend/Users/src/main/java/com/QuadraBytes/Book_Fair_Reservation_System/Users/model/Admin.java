@@ -1,37 +1,36 @@
 package com.QuadraBytes.Book_Fair_Reservation_System.Users.model;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users",schema = "quadrabytes")
+@Table(name = "admins", schema = "quadrabytes")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Admin {
+
     @Id
     @GeneratedValue
     @UuidGenerator
-    @Column(name = "user_id")
-    private UUID userId;
+    @Column(name = "admin_id")
+    private UUID adminId;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(nullable = false, unique = true, name = "admin_name")
+    private String adminname;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    private String role;
 
     @Column(name = "is_active")
     private Boolean isActive = true;
@@ -43,7 +42,4 @@ public class User {
 
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
-
-    @Column(name = "active_number_of_stalls")
-    private Integer activeNumberOfStalls = 0;
 }
