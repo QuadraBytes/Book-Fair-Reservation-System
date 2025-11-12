@@ -21,8 +21,9 @@ networks:
   gateway-network:
     driver: bridge
   user-network:
-    external: true
+    driver: bridge
   reservation-network:
-    external: true
+    driver: bridge
   notification-network:
-    external: true
+    driver: bridge
+
