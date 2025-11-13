@@ -1,5 +1,23 @@
+#version: '3.8'
+#services:
+#  mysql8:
+#    image: mysql:8.0
+#    container_name: mysql8
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "@123"
+#      MYSQL_DATABASE: QuadraBytes
+#    ports:
+#      - "3306:3306"
+#    command: --default-authentication-plugin=mysql_native_password
+#    volumes:
+#      - ./mysql8-data:/var/lib/mysql
+
+
 version: '3.8'
+
 services:
+
   mysql8:
     image: mysql:8.0
     container_name: mysql8
@@ -12,3 +30,69 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - ./mysql8-data:/var/lib/mysql
+    networks:
+      - backend-network
+
+
+  user-service:
+    build: ./Users
+    container_name: user-service
+    image: user-service:latest
+    depends_on:
+      - mysql8
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql8:3306/QuadraBytes
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "@123"
+    ports:
+      - "9081:9081"
+    networks:
+      - backend-network
+
+
+  reservation-service:
+    build: ./Reservation
+    container_name: reservation-service
+    image: reservation-service:latest
+    depends_on:
+      - mysql8
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql8:3306/QuadraBytes
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "@123"
+    ports:
+      - "9082:9082"
+    networks:
+      - backend-network
+
+
+  notification-service:
+    build: ./Notifications
+    container_name: notification-service
+    image: notification-service:latest
+    ports:
+      - "9083:9083"
+    networks:
+      - backend-network
+
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: apigateway
+    image: apigateway:latest
+    depends_on:
+      - user-service
+      - reservation-service
+      - notification-service
+    environment:
+      USER_SERVICE_URL: http://user-service:9081
+      RESERVATION_SERVICE_URL: http://reservation-service:9082
+      NOTIFICATION_SERVICE_URL: http://notification-service:9083
+    ports:
+      - "9080:9080"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge

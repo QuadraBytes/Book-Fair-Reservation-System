@@ -6,7 +6,7 @@ services:
     container_name: api-gateway
     image: api-gateway:latest
     ports:
-      - "8080:8080"
+      - "9080:9080"
     environment:
       - USER_SERVICE_URL=http://user-service:9081
       - RESERVATION_SERVICE_URL=http://reservation-service:9082
