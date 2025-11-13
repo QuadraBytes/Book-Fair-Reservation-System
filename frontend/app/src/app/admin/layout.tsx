@@ -39,7 +39,7 @@ export default function AdminLayout({
             </div>
             <div className="px-4">
               <div className="flex flex-col gap-3">
-                {navItem("/admin/matrix", "Admin Dashboard")}
+                {navItem("/admin/matrix", "Dashboard")}
                 {navItem("/admin/event-map", "Event Map")}
                 {navItem("/admin/users", "Users")}
               </div>
