@@ -4,15 +4,14 @@ import Image from "next/image";
 import Button from "@/components/button";
 import { useRouter } from "next/navigation";
 
-const SignUpPage: React.FC = () => {
+const AdminLoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { email, password, confirmPassword });
+    console.log("Form submitted:", { email, password });
     router.replace("/stallbooking");
   };
 
@@ -21,7 +20,7 @@ const SignUpPage: React.FC = () => {
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
         <Image
           src="/images/sign-in-background.png"
-          alt="Books backdrop"
+          alt="Sign in background"
           fill
           priority
           className="object-cover"
@@ -35,10 +34,10 @@ const SignUpPage: React.FC = () => {
         </h1>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50 p-8">
+      <div className="flex flex-1 items-center justify-center bg-gradient-to-br from-orange-50 to-pink-50  p-8">
         <div className="w-full max-w-md">
           <h2 className="mb-12 text-center font-serif text-4xl font-light text-gray-800">
-            Sign Up
+            Admin Login
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -52,61 +51,39 @@ const SignUpPage: React.FC = () => {
               <input
                 type="email"
                 id="email"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base text-gray-900 outline-none transition-colors duration-300 focus:border-orange-700"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="password"
-                className="text-base font-normal text-gray-800"
+                className="text-base font-normal text-gray-950"
               >
                 Password
               </label>
               <input
                 type="password"
                 id="password"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base text-gray-900 outline-none transition-colors duration-300 focus:border-orange-700"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="new-password"
               />
             </div>
-
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="confirmPassword"
-                className="text-base font-normal text-gray-800"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                autoComplete="new-password"
-              />
-            </div>
-
-            <Button variant="orange" className="z-20">
-              Sign Up
+            <Button variant="orange" className="z-20" onClick={() => {}}>
+              Login
             </Button>
-
             <p className="mt-6 text-center text-sm text-gray-600">
-              Already have an account?{" "}
+              Don&apos;t have an account?{" "}
               <a
-                href="/login"
+                href="/signup"
                 className="font-medium text-orange-700 no-underline transition-colors duration-300 hover:text-orange-800 hover:underline"
               >
-                Login
+                Sign Up
               </a>
             </p>
           </form>
@@ -116,4 +93,4 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-export default SignUpPage;
+export default AdminLoginPage;

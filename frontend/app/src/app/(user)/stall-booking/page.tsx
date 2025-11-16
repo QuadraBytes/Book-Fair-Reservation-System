@@ -89,7 +89,7 @@ const StallBookingPage = () => {
           Event Map
         </h2>
 
-        <div className="bg-white rounded-3xl p-12 shadow-lg mb-8">
+        <div className="bg-white rounded-3xl p-12 mb-8 shadow-[0_20px_60px_rgba(255,122,0,0.12)]">
           <div className="grid grid-cols-8 gap-4">
             {stalls.map((status, index) => (
               <button
@@ -111,7 +111,7 @@ const StallBookingPage = () => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center pb-10">
           <div className="flex gap-8">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 bg-orange-700 rounded"></div>
