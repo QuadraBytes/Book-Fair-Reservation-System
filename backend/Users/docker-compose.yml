@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: .
+    container_name: user-service
+    image: user-service:latest
+    ports:
+      - "9081:9081"
+    networks:
+      - user-network
+
+networks:
+  user-network:
+    driver: bridge

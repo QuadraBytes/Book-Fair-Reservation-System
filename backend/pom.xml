@@ -17,6 +17,7 @@
 		<module>Users</module>
 		<module>Reservation</module>
 		<module>Notifications</module>
+        <module>api-gateway</module>
 	</modules>
 
 	<properties>

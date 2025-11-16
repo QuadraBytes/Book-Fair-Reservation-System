@@ -3,7 +3,7 @@
 # ========================
 # IntelliJ / JetBrains IDEs
 # ========================
-.idea/
+**/.idea/
 *.iml
 *.ipr
 *.iws
@@ -77,3 +77,9 @@ logs/
 *.log
 temp/
 tmp/
+
+# ========================
+# # Docker files
+# ========================
+
+**/mysql8-data/
