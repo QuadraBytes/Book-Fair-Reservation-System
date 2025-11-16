@@ -36,8 +36,8 @@ services:
 
   user-service:
     build: ./Users
-    container_name: user-service
-    image: user-service:latest
+    container_name: quadra-bytes-user-service
+    image: quadra-bytes-user-service:latest
     depends_on:
       - mysql8
     environment:
@@ -52,8 +52,8 @@ services:
 
   reservation-service:
     build: ./Reservation
-    container_name: reservation-service
-    image: reservation-service:latest
+    container_name: quadra-bytes-reservation-service
+    image: quadra-bytes-reservation-service:latest
     depends_on:
       - mysql8
     environment:
@@ -68,8 +68,8 @@ services:
 
   notification-service:
     build: ./Notifications
-    container_name: notification-service
-    image: notification-service:latest
+    container_name: quadra-bytes-notification-service
+    image: quadra-bytes-notification-service:latest
     ports:
       - "9083:9083"
     networks:
@@ -78,8 +78,8 @@ services:
 
   api-gateway:
     build: ./api-gateway
-    container_name: apigateway
-    image: apigateway:latest
+    container_name: quadra-bytes-api-gateway
+    image: quadra-bytes-api-gateway:latest
     depends_on:
       - user-service
       - reservation-service
