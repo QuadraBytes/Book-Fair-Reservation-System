@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/Notifications/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Reservation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Users/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
   </component>
 </project>
