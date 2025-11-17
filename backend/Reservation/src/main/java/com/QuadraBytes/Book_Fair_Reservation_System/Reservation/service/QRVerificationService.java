@@ -26,7 +26,8 @@ public class QRVerificationService {
     @Autowired
     private QRVerificationRepo qrVerificationRepo;
 
-    @Value("${app.base-url:http://localhost:9082}")
+    @Value("${app.base-url=http://173.249.12.92:9080/reservation-service/api/}")
+//    @Value("${app.base-url=http://localhost:9080/reservation-service/api}")
     private String appBaseUrl;
 
     private static final String OUTPUT_DIR = "uploads/qr/";
@@ -62,7 +63,7 @@ public class QRVerificationService {
         String filePath = OUTPUT_DIR + fileName;
 
         // ✅ Actual public URL for access
-        String qrUrl = appBaseUrl + "/qr/" + fileName;
+        String qrUrl = appBaseUrl + "/qr/img/" + fileName;
 
         // ✅ Generate QR image with booking details
         generateQrImage(qrContent, filePath);

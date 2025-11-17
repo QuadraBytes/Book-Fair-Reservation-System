@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.UUID;
 
-@FeignClient(name = "users-service", contextId="userClient", url = "http://localhost:9081/api/users")
+//@FeignClient(name = "users-service", contextId="userClient", url = "http://api-gateway:9080/users-service/api/users")
+@FeignClient(name = "users-service", contextId="userClient", url = "http://173.249.12.92:9080/users-service/api/users")
 public interface UserClient {
 
     @GetMapping("/{id}")

@@ -26,24 +26,45 @@ public class StallService {
 
     // Create one or many stalls by an admin
     public List<StallResponseDTO> createStalls(CreateStallRequestDTO req) {
+
         AdminResponseDTO admin = adminClient.getAdminById(req.getAdminId());
 
-        List<Stall> stalls = IntStream.rangeClosed(1, req.getQuantity())
+        // STEP 1 — Get last stall number from DB
+        String lastNumber = stallRepo.findLastStallNumber();   // Custom Repo method
+        int start = 1;
+
+        if (lastNumber != null && lastNumber.contains("-")) {
+            try {
+                String[] parts = lastNumber.split("-");
+                start = Integer.parseInt(parts[1]) + 1;
+            } catch (Exception e) {
+                start = 1;  // fallback
+            }
+        }
+
+        int begin = start;
+
+        // STEP 2 — Create new stalls with auto incremented numbers
+        List<Stall> stalls = IntStream.rangeClosed(0, req.getQuantity() - 1)
                 .mapToObj(i -> {
                     Stall s = new Stall();
                     s.setType(req.getType());
-                    String number = (req.getQuantity() > 1)
-                            ? req.getPrefix() + "-" + i
-                            : req.getStallNumber();
-                    s.setStallNumber(number);
+
+                    String generatedNumber = "Stall-" + (begin + i);
+                    s.setStallNumber(generatedNumber);
+
                     s.setStatus("active");
                     s.setCreatedBy(admin.getAdminname() + " (" + admin.getEmail() + ")");
                     s.setCreatedDate(LocalDateTime.now());
                     return s;
-                }).toList();
+                })
+                .toList();
 
-        return stallRepo.saveAll(stalls).stream().map(StallResponseDTO::from).toList();
+        return stallRepo.saveAll(stalls).stream()
+                .map(StallResponseDTO::from)
+                .toList();
     }
+
 
     public List<StallResponseDTO> getAll() {
         return stallRepo.findAll().stream().map(StallResponseDTO::from).toList();

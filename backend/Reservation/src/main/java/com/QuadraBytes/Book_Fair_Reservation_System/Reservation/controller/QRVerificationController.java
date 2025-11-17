@@ -45,7 +45,7 @@ public class QRVerificationController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{fileName:.+}")
+    @GetMapping("/img/{fileName:.+}")
     public ResponseEntity<Resource> getQrImage(@PathVariable String fileName) {
         try {
             Path filePath = Paths.get(QR_DIRECTORY).resolve(fileName).normalize();

@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "users-service", contextId="adminClient", url = "http://localhost:9081/api/admins")
+//@FeignClient(name = "users-service", contextId="adminClient", url = "http://api-gateway:9080/users-service/api/admins")
+@FeignClient(name = "users-service", contextId="adminClient", url = "http://173.249.12.92:9080/users-service/api/admins")
 public interface AdminClient {
 
     @GetMapping("/{id}")

@@ -15,12 +15,10 @@ public class CreateStallRequestDTO {
     @NotBlank
     private String type;
 
-    private String prefix;           // For bulk creation, e.g., ST
-    private String stallNumber;      // For single creation
-
     @Min(1)
-    private int quantity = 1;        // 1 = single, >1 = multiple
+    private int quantity = 1;
 
     @NotNull
-    private UUID adminId;            // Who created these stalls
+    private UUID adminId;     // Creator
 }
+
