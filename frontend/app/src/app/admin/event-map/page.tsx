@@ -1,66 +1,186 @@
 "use client";
+import React, { useState } from "react";
+import StallMap, { Stall, MapElement } from "@/components/stallMap";
 
-import { useState } from "react";
+const AdminEventMapPage = () => {
+  const [stalls, setStalls] = useState<Stall[]>([
+    // Row 0 - Top section with large stalls
+    {
+      id: "A1",
+      size: "large",
+      status: "available",
+      row: 0,
+      col: 0,
+      colspan: 2,
+      rowspan: 2,
+    },
+    {
+      id: "A2",
+      size: "large",
+      status: "not-available",
+      row: 0,
+      col: 2,
+      colspan: 2,
+      rowspan: 2,
+    },
+    {
+      id: "A3",
+      size: "large",
+      status: "available",
+      row: 0,
+      col: 4,
+      colspan: 2,
+      rowspan: 2,
+    },
+    {
+      id: "A4",
+      size: "large",
+      status: "available",
+      row: 0,
+      col: 6,
+      colspan: 2,
+      rowspan: 2,
+    },
+    {
+      id: "A5",
+      size: "large",
+      status: "not-available",
+      row: 0,
+      col: 8,
+      colspan: 2,
+      rowspan: 2,
+    },
 
-const initialUnavailable = new Set([2, 6, 12, 18]);
-const initialSelected = new Set([9, 10]);
+    // Row 2 - Medium stalls
+    {
+      id: "B1",
+      size: "medium",
+      status: "available",
+      row: 2,
+      col: 1,
+      colspan: 2,
+    },
+    {
+      id: "B2",
+      size: "medium",
+      status: "available",
+      row: 2,
+      col: 3,
+      colspan: 2,
+    },
+    {
+      id: "B3",
+      size: "medium",
+      status: "not-available",
+      row: 2,
+      col: 5,
+      colspan: 2,
+    },
+    {
+      id: "B4",
+      size: "medium",
+      status: "available",
+      row: 2,
+      col: 7,
+      colspan: 2,
+    },
+    {
+      id: "B5",
+      size: "medium",
+      status: "available",
+      row: 2,
+      col: 9,
+      colspan: 2,
+    },
 
-export default function EventMapPage() {
-  const cols = 7;
-  const rows = 5;
+    // Row 3 - Small stalls left side
+    { id: "C1", size: "small", status: "available", row: 3, col: 0 },
+    { id: "C2", size: "small", status: "available", row: 3, col: 1 },
+    { id: "C3", size: "small", status: "not-available", row: 3, col: 2 },
+    { id: "C4", size: "small", status: "available", row: 3, col: 3 },
+    { id: "C5", size: "small", status: "available", row: 3, col: 4 },
 
-  const [unavailable] = useState<Set<number>>(initialUnavailable);
-  const [selected, setSelected] = useState<Set<number>>(initialSelected);
+    // Row 3 - Small stalls right side
+    { id: "C6", size: "small", status: "available", row: 3, col: 6 },
+    { id: "C7", size: "small", status: "available", row: 3, col: 7 },
+    { id: "C8", size: "small", status: "not-available", row: 3, col: 8 },
+    { id: "C9", size: "small", status: "available", row: 3, col: 9 },
+    { id: "C10", size: "small", status: "available", row: 3, col: 10 },
 
-  function toggleCell(index: number) {
-    if (unavailable.has(index)) return;
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
-  }
+    // Row 4 - Small stalls left side
+    { id: "D1", size: "small", status: "available", row: 4, col: 0 },
+    { id: "D2", size: "small", status: "not-available", row: 4, col: 1 },
+    { id: "D3", size: "small", status: "available", row: 4, col: 2 },
+    { id: "D4", size: "small", status: "available", row: 4, col: 3 },
+    { id: "D5", size: "small", status: "available", row: 4, col: 4 },
+
+    // Row 4 - Small stalls right side
+    { id: "D6", size: "small", status: "available", row: 4, col: 6 },
+    { id: "D7", size: "small", status: "available", row: 4, col: 7 },
+    { id: "D8", size: "small", status: "available", row: 4, col: 8 },
+    { id: "D9", size: "small", status: "not-available", row: 4, col: 9 },
+  ]);
+
+  // Map elements (entrance, exit, restrooms, info desk)
+  const mapElements: MapElement[] = [
+    { type: "entrance", label: "ENTRANCE", row: 3, col: 5, rowspan: 2 },
+    { type: "exit", label: "EXIT", row: 4, col: 10, rowspan: 1 },
+    { type: "restroom", label: "🚻", row: 0, col: 10 },
+    { type: "restroom", label: "🚻", row: 1, col: 10 },
+    { type: "info", label: "INFO", row: 2, col: 0 },
+  ];
+
+  const availableCount = stalls.filter((s) => s.status === "available").length;
+  const bookedCount = stalls.filter((s) => s.status === "not-available").length;
+  const selectedCount = stalls.filter((s) => s.status === "selected").length;
 
   return (
-    <section className="p-12 bg-gradient-to-br from-orange-50 to-pink-50">
-      <h3 className="text-center text-2xl font-serif mb-8">Event Map</h3>
-
-      <div className="max-w-4xl mx-auto rounded-2xl bg-white p-8 shadow-[0_20px_60px_rgba(255,122,0,0.12)]">
-        <div className="grid grid-cols-7 gap-4 p-6 bg-white rounded-lg">
-          {Array.from({ length: cols * rows }).map((_, i) => {
-            const isUnavailable = unavailable.has(i);
-            const isSelected = selected.has(i);
-            const cls = isUnavailable
-              ? "bg-black"
-              : isSelected
-              ? "bg-orange-600"
-              : "bg-gray-200";
-            return (
-              <div
-                key={i}
-                onClick={() => toggleCell(i)}
-                className={`${cls} h-12 w-12 rounded-md cursor-pointer`}
-              />
-            );
-          })}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-pink-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-light text-gray-800 font-serif mb-2">
+            Event Map Overview
+          </h1>
+          <p className="text-gray-600">View the current status of all stalls</p>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-orange-600 rounded-sm" />
-            <span>Selected</span>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Total Stalls</div>
+            <div className="text-3xl font-bold text-gray-800">
+              {stalls.length}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-black rounded-sm" />
-            <span>Not Available</span>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Available</div>
+            <div className="text-3xl font-bold text-green-600">
+              {availableCount}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-gray-200 rounded-sm" />
-            <span>Available</span>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Booked</div>
+            <div className="text-3xl font-bold text-orange-600">
+              {selectedCount}
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Not Available</div>
+            <div className="text-3xl font-bold text-gray-800">
+              {bookedCount}
+            </div>
           </div>
         </div>
+
+        <StallMap
+          stalls={stalls}
+          mapElements={mapElements}
+          showLegend={true}
+          readonly={true}
+        />
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+export default AdminEventMapPage;

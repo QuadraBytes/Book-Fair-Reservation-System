@@ -1,0 +1,18 @@
+ssh root@173.249.12.92
+QuadraBytesEngRuh
+
+
+
+cd ~/Book-Fair-Reservation-System
+git switch backend
+git pull origin backend
+
+cd backend
+cd Users && ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+cd ../Reservation && ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+cd ../Notifications && ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+cd ../api-gateway && ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+
+cd
+docker compose down
+docker compose up -d --build
