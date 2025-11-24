@@ -1,5 +1,10 @@
 "use client";
 import React from "react";
+import {
+  DEFAULT_STALL_CONFIGS,
+  DEFAULT_MAP_ELEMENTS,
+  createStallsWithStatus,
+} from "./stallData";
 
 export type StallSize = "small" | "medium" | "large";
 export type StallStatus = "available" | "selected" | "not-available";
@@ -24,20 +29,22 @@ export interface MapElement {
 }
 
 interface StallMapProps {
-  stalls: Stall[];
-  mapElements?: MapElement[];
+  selectedStallIds?: string[];
+  unavailableStallIds?: string[];
   onStallClick?: (stallId: string) => void;
   showLegend?: boolean;
   readonly?: boolean;
 }
 
 const StallMap: React.FC<StallMapProps> = ({
-  stalls,
-  mapElements = [],
+  selectedStallIds = [],
+  unavailableStallIds = [],
   onStallClick,
   showLegend = true,
   readonly = false,
 }) => {
+  const stalls = createStallsWithStatus(selectedStallIds, unavailableStallIds);
+  const mapElements = DEFAULT_MAP_ELEMENTS;
   const getStallColor = (status: StallStatus, size: StallSize) => {
     if (status === "selected") {
       return "bg-orange-600 border-orange-700";
@@ -45,7 +52,6 @@ const StallMap: React.FC<StallMapProps> = ({
     if (status === "not-available") {
       return "bg-black border-black";
     }
-    // Light colors for different sizes when available
     switch (size) {
       case "small":
         return "bg-blue-100 border-blue-200 hover:bg-blue-200";
@@ -79,7 +85,6 @@ const StallMap: React.FC<StallMapProps> = ({
     }
   };
 
-  // Calculate grid dimensions
   const maxRow = Math.max(
     ...stalls.map((s) => s.row + (s.rowspan || 1) - 1),
     ...mapElements.map((e) => e.row + (e.rowspan || 1) - 1)
@@ -89,12 +94,10 @@ const StallMap: React.FC<StallMapProps> = ({
     ...mapElements.map((e) => e.col + (e.colspan || 1) - 1)
   );
 
-  // Create a grid to track occupied cells
   const grid: (Stall | MapElement | null)[][] = Array(maxRow + 1)
     .fill(null)
     .map(() => Array(maxCol + 1).fill(null));
 
-  // Place stalls in grid
   stalls.forEach((stall) => {
     const rowspan = stall.rowspan || 1;
     const colspan = stall.colspan || 1;
@@ -105,7 +108,6 @@ const StallMap: React.FC<StallMapProps> = ({
     }
   });
 
-  // Place map elements in grid
   mapElements.forEach((element) => {
     const rowspan = element.rowspan || 1;
     const colspan = element.colspan || 1;
@@ -137,18 +139,16 @@ const StallMap: React.FC<StallMapProps> = ({
                 );
               }
 
-              // Check if this is the origin cell for a multi-cell element
               const isOrigin =
                 "id" in cell
                   ? cell.row === rowIndex && cell.col === colIndex
                   : cell.row === rowIndex && cell.col === colIndex;
 
               if (!isOrigin) {
-                return null; // Skip non-origin cells of multi-cell elements
+                return null; 
               }
 
               if ("type" in cell) {
-                // Map element
                 const element = cell as MapElement;
                 return (
                   <div
@@ -176,7 +176,6 @@ const StallMap: React.FC<StallMapProps> = ({
                   </div>
                 );
               } else {
-                // Stall
                 const stall = cell as Stall;
                 return (
                   <button
@@ -217,7 +216,6 @@ const StallMap: React.FC<StallMapProps> = ({
 
       {showLegend && (
         <div className="flex flex-wrap gap-6 justify-center">
-          {/* Stall sizes */}
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-blue-100 border-2 border-blue-200 rounded"></div>
             <span className="text-sm text-gray-700">Small Stall</span>
@@ -231,7 +229,6 @@ const StallMap: React.FC<StallMapProps> = ({
             <span className="text-sm text-gray-700">Large Stall</span>
           </div>
 
-          {/* Stall status */}
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-orange-600 border-2 border-orange-700 rounded"></div>
             <span className="text-sm text-gray-700">Selected</span>
@@ -241,7 +238,6 @@ const StallMap: React.FC<StallMapProps> = ({
             <span className="text-sm text-gray-700">Not Available</span>
           </div>
 
-          {/* Map elements */}
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-emerald-400 border-2 border-emerald-500 rounded"></div>
             <span className="text-sm text-gray-700">Entrance</span>

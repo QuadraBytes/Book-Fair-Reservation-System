@@ -1,169 +1,43 @@
 "use client";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import StallMap, { Stall, MapElement } from "@/components/stallMap";
+import StallMap from "@/components/stallMap";
+import { DEFAULT_STALL_CONFIGS } from "@/components/stallData";
 import React, { useState } from "react";
 
 const StallBookingPage = () => {
-  const [stalls, setStalls] = useState<Stall[]>([
-    // Row 0 - Top section with large stalls
-    {
-      id: "A1",
-      size: "large",
-      status: "available",
-      row: 0,
-      col: 0,
-      colspan: 2,
-      rowspan: 2,
-    },
-    {
-      id: "A2",
-      size: "large",
-      status: "not-available",
-      row: 0,
-      col: 2,
-      colspan: 2,
-      rowspan: 2,
-    },
-    {
-      id: "A3",
-      size: "large",
-      status: "available",
-      row: 0,
-      col: 4,
-      colspan: 2,
-      rowspan: 2,
-    },
-    {
-      id: "A4",
-      size: "large",
-      status: "available",
-      row: 0,
-      col: 6,
-      colspan: 2,
-      rowspan: 2,
-    },
-    {
-      id: "A5",
-      size: "large",
-      status: "not-available",
-      row: 0,
-      col: 8,
-      colspan: 2,
-      rowspan: 2,
-    },
-
-    // Row 2 - Medium stalls
-    {
-      id: "B1",
-      size: "medium",
-      status: "available",
-      row: 2,
-      col: 1,
-      colspan: 2,
-    },
-    {
-      id: "B2",
-      size: "medium",
-      status: "available",
-      row: 2,
-      col: 3,
-      colspan: 2,
-    },
-    {
-      id: "B3",
-      size: "medium",
-      status: "not-available",
-      row: 2,
-      col: 5,
-      colspan: 2,
-    },
-    {
-      id: "B4",
-      size: "medium",
-      status: "available",
-      row: 2,
-      col: 7,
-      colspan: 2,
-    },
-    {
-      id: "B5",
-      size: "medium",
-      status: "available",
-      row: 2,
-      col: 9,
-      colspan: 2,
-    },
-
-    // Row 3 - Small stalls left side
-    { id: "C1", size: "small", status: "available", row: 3, col: 0 },
-    { id: "C2", size: "small", status: "available", row: 3, col: 1 },
-    { id: "C3", size: "small", status: "not-available", row: 3, col: 2 },
-    { id: "C4", size: "small", status: "available", row: 3, col: 3 },
-    { id: "C5", size: "small", status: "available", row: 3, col: 4 },
-
-    // Row 3 - Small stalls right side
-    { id: "C6", size: "small", status: "available", row: 3, col: 6 },
-    { id: "C7", size: "small", status: "available", row: 3, col: 7 },
-    { id: "C8", size: "small", status: "not-available", row: 3, col: 8 },
-    { id: "C9", size: "small", status: "available", row: 3, col: 9 },
-    { id: "C10", size: "small", status: "available", row: 3, col: 10 },
-
-    // Row 4 - Small stalls left side
-    { id: "D1", size: "small", status: "available", row: 4, col: 0 },
-    { id: "D2", size: "small", status: "not-available", row: 4, col: 1 },
-    { id: "D3", size: "small", status: "available", row: 4, col: 2 },
-    { id: "D4", size: "small", status: "available", row: 4, col: 3 },
-    { id: "D5", size: "small", status: "available", row: 4, col: 4 },
-
-    // Row 4 - Small stalls right side
-    { id: "D6", size: "small", status: "available", row: 4, col: 6 },
-    { id: "D7", size: "small", status: "available", row: 4, col: 7 },
-    { id: "D8", size: "small", status: "available", row: 4, col: 8 },
-    { id: "D9", size: "small", status: "not-available", row: 4, col: 9 },
+  const [selectedStallIds, setSelectedStallIds] = useState<string[]>([]);
+  const [unavailableStallIds] = useState<string[]>([
+    "A2",
+    "A5",
+    "B3",
+    "C3",
+    "C8",
+    "D2",
+    "D9",
   ]);
 
-  // Map elements (entrance, exit, restrooms, info desk)
-  const mapElements: MapElement[] = [
-    { type: "entrance", label: "ENTRANCE", row: 3, col: 5, rowspan: 2 },
-    { type: "exit", label: "EXIT", row: 4, col: 10, rowspan: 1 },
-    { type: "restroom", label: "🚻", row: 0, col: 10 },
-    { type: "restroom", label: "🚻", row: 1, col: 10 },
-    { type: "info", label: "INFO", row: 2, col: 0 },
-  ];
-
   const handleStallClick = (stallId: string) => {
-    setStalls((prevStalls) =>
-      prevStalls.map((stall) => {
-        if (stall.id === stallId) {
-          return {
-            ...stall,
-            status:
-              stall.status === "available"
-                ? "selected"
-                : stall.status === "selected"
-                ? "available"
-                : stall.status,
-          };
-        }
-        return stall;
-      })
-    );
+    setSelectedStallIds((prev) => {
+      if (prev.includes(stallId)) {
+        return prev.filter((id) => id !== stallId);
+      } else {
+        return [...prev, stallId];
+      }
+    });
   };
 
   const handleBooking = () => {
-    const selectedStalls = stalls
-      .filter((stall) => stall.status === "selected")
-      .map((stall) => stall.id);
-
-    if (selectedStalls.length === 0) {
+    if (selectedStallIds.length === 0) {
       alert("Please select at least one stall");
       return;
     }
 
-    const stallDetails = stalls
-      .filter((stall) => stall.status === "selected")
-      .map((stall) => `${stall.id} (${stall.size})`)
+    const stallDetails = selectedStallIds
+      .map((id) => {
+        const config = DEFAULT_STALL_CONFIGS.find((s) => s.id === id);
+        return config ? `${config.id} (${config.size})` : id;
+      })
       .join(", ");
 
     alert(`Booking stalls: ${stallDetails}`);
@@ -179,8 +53,8 @@ const StallBookingPage = () => {
         </h2>
 
         <StallMap
-          stalls={stalls}
-          mapElements={mapElements}
+          selectedStallIds={selectedStallIds}
+          unavailableStallIds={unavailableStallIds}
           onStallClick={handleStallClick}
           showLegend={true}
         />
