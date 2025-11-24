@@ -6,12 +6,14 @@ import com.QuadraBytes.Book_Fair_Reservation_System.Users.dto.UpdateUserRequestD
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.dto.UserResponseDTO;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.model.User;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.service.UserService;
+import com.QuadraBytes.Book_Fair_Reservation_System.Users.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +22,12 @@ public class UserController {
 
     private final UserService userService;
     public UserController(UserService userService) { this.userService = userService; }
+
+    private final JwtUtil jwtUtil;
+    public UserController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO req) {
@@ -65,12 +73,28 @@ public class UserController {
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-       @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(@Valid @RequestBody LoginRequestDTO req) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO req) {
         return userService.login(req.getUsernameOrEmail(), req.getPassword())
-                .map(UserResponseDTO::from)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(401).build());
+                .map(user -> {
+                    String token = jwtUtil.generateToken(
+                            user.getUserId().toString(),
+                            user.getEmail()
+                    );
+
+                    return ResponseEntity.ok(
+                            Map.of(
+                                    "token", token,
+                                    "user", UserResponseDTO.from(user)
+                            )
+                    );
+                })
+                .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> check() {
+        return ResponseEntity.ok("User Service is running");
     }
 
     // Deactivate (optional)
