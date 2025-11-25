@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Clock, Phone, Building2, Calendar, FileText, Eye } from "lucide-react";
+import { Clock, Phone, Building2, Calendar, FileText, Eye } from "lucide-react";
 
 const PendingRequestsPage: React.FC = () => {
   const router = useRouter();
@@ -36,13 +36,6 @@ const PendingRequestsPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-8 py-12">
         <div className="bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100">
           <div className="flex items-center gap-6 px-8 py-8 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg">
-            <button
-              onClick={() => router.back()}
-              className="w-12 h-12 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              <ArrowLeft className="text-white" size={20} />
-            </button>
-
             <div>
               <h1 className="text-4xl font-bold text-white mb-1">Pending Requests</h1>
             </div>
