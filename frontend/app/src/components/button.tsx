@@ -5,6 +5,7 @@ type ButtonProps = {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
   children,
   onClick,
+  disabled = false,
 }) => {
   const base =
     "px-6 py-2 rounded-full font-medium transition duration-200";
@@ -27,8 +29,9 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`${base} ${variants[variant]} ${className}`}
+      className={`${base} ${variants[variant]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>
