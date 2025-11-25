@@ -8,6 +8,7 @@ import com.QuadraBytes.Book_Fair_Reservation_System.Users.model.User;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.service.UserService;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.utils.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,4 +111,19 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            return ResponseEntity.status(401).body("Missing token");
+//        }
+//
+//        String token = authHeader.replace("Bearer ", "");
+//        if (!jwtUtil.isTokenExpired(token)) {
+//            return ResponseEntity.badRequest().body("Token not expired yet");
+//        }
+//
+//        String newToken = jwtUtil.refreshToken(token);
+//        return ResponseEntity.ok(Map.of("token", newToken));
+//    }
 }

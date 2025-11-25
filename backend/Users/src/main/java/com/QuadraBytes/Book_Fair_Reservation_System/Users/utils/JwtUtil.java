@@ -27,11 +27,30 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims validateToken(String token) {
+    public Claims validateToken(String token) throws ExpiredJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public boolean isTokenExpired(String token) {
+        try {
+            Date expiration = validateToken(token).getExpiration();
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+    }
+
+    public String refreshToken(String token) {
+        Claims claims;
+        try {
+            claims = validateToken(token);
+        } catch (ExpiredJwtException e) {
+            claims = e.getClaims(); // use expired claims to generate new token
+        }
+        return generateToken(claims.getSubject(), claims.get("email", String.class));
     }
 }

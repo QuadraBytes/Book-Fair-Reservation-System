@@ -1,7 +1,6 @@
 package com.QuadraBytes.Book_Fair_Reservation_System.Reservation.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -13,13 +12,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtRequestFilter extends HttpFilter {
 
     private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
     private static final String SECRET = "SUPER_SECRET_KEY_123456789_987654321_SUPER_SECRET";
+
+    private final JwtUtil jwtUtil;
+
+    public JwtRequestFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilter(HttpServletRequest request,
@@ -50,14 +54,21 @@ public class JwtRequestFilter extends HttpFilter {
         String token = authHeader.replace("Bearer ", "");
 
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
-                    .build()
-                    .parseClaimsJws(token);
-            log.info("Token validated successfully: {}", path);
+            // Check expiration
+            if (jwtUtil.isTokenExpired(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Token expired. Please login again.");
+                return;
+            }
+
+            // Validate signature and claims
+            jwtUtil.validateToken(token);
+            log.info("Token validated successfully for {}", path);
+
         } catch (Exception e) {
             log.error("Token validation failed → {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid token");
             return;
         }
 
