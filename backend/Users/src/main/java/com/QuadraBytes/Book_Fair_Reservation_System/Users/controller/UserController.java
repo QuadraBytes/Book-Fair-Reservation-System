@@ -6,12 +6,16 @@ import com.QuadraBytes.Book_Fair_Reservation_System.Users.dto.UpdateUserRequestD
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.dto.UserResponseDTO;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.model.User;
 import com.QuadraBytes.Book_Fair_Reservation_System.Users.service.UserService;
+import com.QuadraBytes.Book_Fair_Reservation_System.Users.utils.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -19,7 +23,12 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService) { this.userService = userService; }
+    private final JwtUtil jwtUtil;
+
+    public UserController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO req) {
@@ -65,12 +74,26 @@ public class UserController {
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-       @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(@Valid @RequestBody LoginRequestDTO req) {
-        return userService.login(req.getUsernameOrEmail(), req.getPassword())
-                .map(UserResponseDTO::from)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(401).build());
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO req) {
+        var optionalUser = userService.login(req.getUsernameOrEmail(), req.getPassword());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+
+        User user = optionalUser.get();
+        String token = jwtUtil.generateToken(user.getUserId().toString(), user.getEmail());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("user", UserResponseDTO.from(user));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> check() {
+        return ResponseEntity.ok("User Service is running");
     }
 
     // Deactivate (optional)
@@ -88,4 +111,19 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            return ResponseEntity.status(401).body("Missing token");
+//        }
+//
+//        String token = authHeader.replace("Bearer ", "");
+//        if (!jwtUtil.isTokenExpired(token)) {
+//            return ResponseEntity.badRequest().body("Token not expired yet");
+//        }
+//
+//        String newToken = jwtUtil.refreshToken(token);
+//        return ResponseEntity.ok(Map.of("token", newToken));
+//    }
 }
