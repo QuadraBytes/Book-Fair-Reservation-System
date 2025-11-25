@@ -122,7 +122,7 @@ const PendingRequestsPage: React.FC = () => {
 
                     <td className="py-6 px-8 text-center">
                       <button
-                        onClick={() => router.push(`/pending-requests/view`)}
+                        onClick={() => router.push(`/admin/pending-requests/view`)}
                         className={`px-6 py-2.5 rounded-xl text-white font-semibold transition-all duration-300 flex items-center gap-2 mx-auto shadow-md ${
                           hoveredRow === i
                             ? "bg-gradient-to-r from-orange-600 to-orange-500 shadow-lg transform scale-105"
