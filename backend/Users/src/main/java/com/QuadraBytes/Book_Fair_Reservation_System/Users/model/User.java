@@ -11,8 +11,9 @@ import org.hibernate.annotations.UuidGenerator;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @Entity
-@Table(name = "users",schema = "quadrabytes")
+@Table(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
