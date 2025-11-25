@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,9 +22,8 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService) { this.userService = userService; }
-
     private final JwtUtil jwtUtil;
+
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
@@ -75,21 +75,19 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO req) {
-        return userService.login(req.getUsernameOrEmail(), req.getPassword())
-                .map(user -> {
-                    String token = jwtUtil.generateToken(
-                            user.getUserId().toString(),
-                            user.getEmail()
-                    );
+        var optionalUser = userService.login(req.getUsernameOrEmail(), req.getPassword());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
 
-                    return ResponseEntity.ok(
-                            Map.of(
-                                    "token", token,
-                                    "user", UserResponseDTO.from(user)
-                            )
-                    );
-                })
-                .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+        User user = optionalUser.get();
+        String token = jwtUtil.generateToken(user.getUserId().toString(), user.getEmail());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("user", UserResponseDTO.from(user));
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/health")

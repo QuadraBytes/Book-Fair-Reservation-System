@@ -17,7 +17,6 @@ public class UserResponseDTO {
     private Integer activeNumberOfStalls;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private String token;
 
     public static UserResponseDTO from(User u) {
         return UserResponseDTO.builder()
@@ -28,7 +27,6 @@ public class UserResponseDTO {
                 .activeNumberOfStalls(u.getActiveNumberOfStalls())
                 .createdDate(u.getCreatedDate())
                 .modifiedDate(u.getModifiedDate())
-                .token(u.getToken())
                 .build();
     }
 }
