@@ -41,6 +41,7 @@ export default function AdminLayout({
               <div className="flex flex-col gap-3">
                 {navItem("/admin/event-map", "Event Map")}
                 {navItem("/admin/users", "Users")}
+                {navItem("/admin/pending-requests", "Pending Requests")}
               </div>
             </div>
           </div>
