@@ -5,8 +5,6 @@ import { ArrowLeft, Building2, Phone, Calendar, Info, CheckCircle, XCircle } fro
 
 const RequestDetailsPage = () => {
   const router = useRouter();
-
-  // Temporary sample data – replace with real API later
   const request = {
     company: "Lake House Publishers",
     contact: "+94 70 123 4567",
@@ -18,8 +16,6 @@ const RequestDetailsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50">
-      
-      {/* Header */}
       <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-xl">
         <div className="max-w-5xl mx-auto px-8 py-6 flex items-center gap-6">
           <button
@@ -35,7 +31,6 @@ const RequestDetailsPage = () => {
         </div>
       </div>
 
-      {/* Content */}
       <main className="max-w-5xl mx-auto px-8 py-10">
         <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
 
@@ -80,13 +75,11 @@ const RequestDetailsPage = () => {
             </div>
           </div>
 
-          {/* Description */}
           <div className="mb-10">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Description</h3>
             <p className="text-gray-700 leading-relaxed">{request.description}</p>
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-center gap-6 mt-10">
 
             <button
