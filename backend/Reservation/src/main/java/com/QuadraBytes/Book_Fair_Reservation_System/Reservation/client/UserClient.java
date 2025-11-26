@@ -15,6 +15,6 @@ public interface UserClient {
     @GetMapping("/{id}")
     UserResponseDTO getUserById(@PathVariable("id") UUID id);
 
-    @PutMapping("/{id}/active-stalls/{count}")
-    void updateActiveStalls(@PathVariable("id") UUID userId, @PathVariable("count") int count);
+    @PutMapping("/{userId}/active-stalls/{count}")
+    void updateActiveStalls(@PathVariable("userId") UUID userId, @PathVariable("count") int count);
 }

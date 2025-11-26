@@ -29,7 +29,7 @@ public class QRVerificationController {
 
     // ✅ Admin verifies a QR (like scanning at the gate)
     @PutMapping("/verify/{bookingId}")
-    public ResponseEntity<QRResponseDTO> verify(@PathVariable UUID bookingId) {
+    public ResponseEntity<QRResponseDTO> verify(@PathVariable("bookingId") UUID bookingId) {
         return qrVerificationService.verifyQr(bookingId)
                 .map(QRResponseDTO::from)
                 .map(ResponseEntity::ok)
@@ -38,7 +38,7 @@ public class QRVerificationController {
 
     // ✅ Get QR details by booking
     @GetMapping("/{bookingId}")
-    public ResponseEntity<QRResponseDTO> getByBooking(@PathVariable UUID bookingId) {
+    public ResponseEntity<QRResponseDTO> getByBooking(@PathVariable("bookingId") UUID bookingId) {
         return qrVerificationService.getByBooking(bookingId)
                 .map(QRResponseDTO::from)
                 .map(ResponseEntity::ok)
@@ -46,7 +46,7 @@ public class QRVerificationController {
     }
 
     @GetMapping("/img/{fileName:.+}")
-    public ResponseEntity<Resource> getQrImage(@PathVariable String fileName) {
+    public ResponseEntity<Resource> getQrImage(@PathVariable("fileName") String fileName) {
         try {
             Path filePath = Paths.get(QR_DIRECTORY).resolve(fileName).normalize();
             File file = filePath.toFile();

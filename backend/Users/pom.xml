@@ -6,13 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
-		<relativePath/>
+		<groupId>com.QuadraBytes.Book-Fair-Reservation-System</groupId>
+		<artifactId>backend</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.QuadraBytes.Book-Fair-Reservation-System</groupId>
+
 	<artifactId>Users</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Users</name>
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.8.5</version>
+			<version>2.3.0</version>
 		</dependency>
 
 		<dependency>
@@ -86,18 +86,6 @@
 
     </dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>2025.0.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -108,6 +96,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+							<version>1.18.34</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
@@ -116,6 +105,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.3.4</version>
+
+				<!-- Optional: keep your Lombok exclude -->
 				<configuration>
 					<excludes>
 						<exclude>
@@ -124,7 +116,16 @@
 						</exclude>
 					</excludes>
 				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 

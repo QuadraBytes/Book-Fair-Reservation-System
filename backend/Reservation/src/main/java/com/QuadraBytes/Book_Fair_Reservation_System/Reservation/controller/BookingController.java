@@ -65,7 +65,7 @@ public class BookingController {
 
     // ✅ Get booking by ID (include user and QR info)
     @GetMapping("/{id}")
-    public ResponseEntity<BookingResponseDTO> getOne(@PathVariable UUID id) {
+    public ResponseEntity<BookingResponseDTO> getOne(@PathVariable("id") UUID id) {
         return bookingService.getBookingById(id)
                 .map(b -> {
                     UserResponseDTO user = userClient.getUserById(b.getUserId());
@@ -96,7 +96,7 @@ public class BookingController {
 
     // ✅ Update booking (QR remains same)
     @PutMapping("/{id}")
-    public ResponseEntity<BookingResponseDTO> update(@PathVariable UUID id,
+    public ResponseEntity<BookingResponseDTO> update(@PathVariable("id") UUID id,
                                                      @RequestBody UpdateBookingRequestDTO req) {
         Booking updated = new Booking();
         updated.setStatus(req.getStatus());
@@ -118,7 +118,7 @@ public class BookingController {
 
     // ✅ Delete booking (also optional: delete QR or free up stall)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         boolean deleted = bookingService.deleteBooking(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

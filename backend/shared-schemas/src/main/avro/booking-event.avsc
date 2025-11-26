@@ -1,0 +1,25 @@
+{
+  "type": "record",
+  "name": "BookingEvent",
+  "namespace": "com.quadrabytes.events",
+  "fields": [
+    { "name": "eventId", "type": "string" },
+    { "name": "eventType", "type": "string" },
+    { "name": "timestamp", "type": "long" },
+
+    { "name": "bookingId", "type": "string" },
+    { "name": "userId", "type": "string" },
+
+    { "name": "username", "type": "string" },
+    { "name": "email", "type": "string" },
+
+    { "name": "stallId", "type": "string" },
+    { "name": "stallNumber", "type": ["null", "string"], "default": null },
+    { "name": "stallType", "type": ["null", "string"], "default": null },
+
+    { "name": "bookingStatus", "type": "string" },
+    { "name": "qrUrl", "type": ["null", "string"], "default": null },
+
+    { "name": "bookingTime", "type": "long" }
+  ]
+}

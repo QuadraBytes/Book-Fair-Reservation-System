@@ -38,7 +38,7 @@ public class StallController {
 
     // 🔍 Get by ID
     @GetMapping("/{id}")
-    public ResponseEntity<StallResponseDTO> getById(@PathVariable UUID id) {
+    public ResponseEntity<StallResponseDTO> getById(@PathVariable("id") UUID id) {
         return stallService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -46,7 +46,7 @@ public class StallController {
 
     // ✏️ Update
     @PutMapping("/{id}")
-    public ResponseEntity<StallResponseDTO> update(@PathVariable UUID id,
+    public ResponseEntity<StallResponseDTO> update(@PathVariable("id") UUID id,
                                                    @RequestBody UpdateStallRequestDTO req) {
         return stallService.update(id, req.toEntity())
                 .map(ResponseEntity::ok)
@@ -55,7 +55,7 @@ public class StallController {
 
     // ❌ Delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         boolean deleted = stallService.delete(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
