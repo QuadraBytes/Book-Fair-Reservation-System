@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getOne(@PathVariable UUID id) {
+    public ResponseEntity<UserResponseDTO> getOne(@PathVariable("id") UUID id) {
         return userService.getUserById(id)
                 .map(UserResponseDTO::from)
                 .map(ResponseEntity::ok)
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable UUID id,
+    public ResponseEntity<UserResponseDTO> update(@PathVariable("id") UUID id,
                                                @Valid @RequestBody UpdateUserRequestDTO req) {
         return userService.updateUser(id, req.applyToEntity())
                 .map(UserResponseDTO::from)
@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         boolean removed = userService.deleteUser(id);
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
@@ -75,7 +75,7 @@ public class UserController {
 
     // Deactivate (optional)
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<UserResponseDTO> deactivate(@PathVariable UUID id) {
+    public ResponseEntity<UserResponseDTO> deactivate(@PathVariable("id") UUID id) {
         return userService.deactivateUser(id)
                 .map(UserResponseDTO::from)
                 .map(ResponseEntity::ok)
@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/active-stalls/{count}")
-    public ResponseEntity<User> updateActiveStalls(@PathVariable UUID userId, @PathVariable int count) {
+    public ResponseEntity<User> updateActiveStalls(@PathVariable("userId") UUID userId, @PathVariable("count") int count) {
         return userService.updateActiveStalls(userId, count)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

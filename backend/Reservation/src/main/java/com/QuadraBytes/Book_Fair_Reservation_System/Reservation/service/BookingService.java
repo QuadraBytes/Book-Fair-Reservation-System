@@ -2,7 +2,10 @@ package com.QuadraBytes.Book_Fair_Reservation_System.Reservation.service;
 
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.client.UserClient;
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.dto.UserResponseDTO;
+import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.kafka.BookingEventProducer;
+import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.kafka.BookingEventFactory;
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.model.Booking;
+import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.model.QRVerification;
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.model.Stall;
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.repository.BookingRepo;
 import com.QuadraBytes.Book_Fair_Reservation_System.Reservation.repository.StallRepo;
@@ -18,43 +21,35 @@ import java.util.UUID;
 @Service
 public class BookingService {
 
-    @Autowired
-    private BookingRepo bookingRepo;
+    @Autowired private BookingRepo bookingRepo;
+    @Autowired private StallRepo stallRepo;
+    @Autowired private UserClient userClient;
+    @Autowired private QRVerificationService qrVerificationService;
+    @Autowired private BookingEventProducer eventProducer;
 
-    @Autowired
-    private StallRepo stallRepo;
-
-    @Autowired
-    private UserClient userClient;
-
-    @Autowired
-    private QRVerificationService qrVerificationService;
-
-    /**
-     * Create a new booking with transactional integrity.
-     * If any step fails, all DB changes are rolled back automatically.
-     */
+    // --------------------------------------------------------
+    //  CREATE BOOKING
+    // --------------------------------------------------------
     @Transactional
     public Booking addBooking(Booking booking) {
+
         // 1️⃣ Validate user
         UserResponseDTO user = userClient.getUserById(booking.getUserId());
-        if (user == null || Boolean.FALSE.equals(user.getIsActive())) {
+        if (user == null || !user.getIsActive())
             throw new RuntimeException("User not found or inactive.");
-        }
 
-        // 2️⃣ Check if user already booked 3 stalls
-        if (user.getActiveNumberOfStalls() != null && user.getActiveNumberOfStalls() >= 3) {
-            throw new RuntimeException("User has already booked the maximum of 3 stalls.");
-        }
+        // 2️⃣ User max stall limit check
+        if (user.getActiveNumberOfStalls() >= 3)
+            throw new RuntimeException("User has already booked 3 stalls.");
 
         // 3️⃣ Validate stall
         Stall stall = stallRepo.findByStallId(booking.getStallId())
                 .orElseThrow(() -> new RuntimeException("Stall not found."));
-        if (!"active".equalsIgnoreCase(stall.getStatus())) {
-            throw new RuntimeException("Stall is not available for booking.");
-        }
 
-        // 4️⃣ Create booking
+        if (!"active".equalsIgnoreCase(stall.getStatus()))
+            throw new RuntimeException("Stall not available.");
+
+        // 4️⃣ Save booking
         booking.setStatus("booked");
         booking.setCreatedDate(LocalDateTime.now());
         booking.setModifiedDate(LocalDateTime.now());
@@ -64,117 +59,137 @@ public class BookingService {
         stall.setStatus("booked");
         stallRepo.save(stall);
 
-        // 6️⃣ Increment user's active stall count (via Feign)
-        int updatedCount = (user.getActiveNumberOfStalls() == null ? 0 : user.getActiveNumberOfStalls()) + 1;
-        try {
-            userClient.updateActiveStalls(user.getUserId(), updatedCount);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update user stall count: " + e.getMessage(), e);
-        }
+        // 6️⃣ Update user active stall count
+        userClient.updateActiveStalls(user.getUserId(), user.getActiveNumberOfStalls() + 1);
 
-        // 7️⃣ Generate QR (if QR generation fails, transaction rolls back)
-        try {
-            qrVerificationService.generateQr(
-                    savedBooking.getId(),
-                    savedBooking.getUserId(),
-                    user.getUsername(),            // username
-                    savedBooking.getStallNumber(), // stall number
-                    stall.getType(),               // stall type (from Stall entity)
-                    savedBooking.getCreatedDate()  // booking time
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate QR code: " + e.getMessage(), e);
-        }
+        // 7️⃣ Generate QR
+        QRVerification qr = qrVerificationService.generateQr(
+                savedBooking.getId(),
+                savedBooking.getUserId(),
+                user.getUsername(),
+                savedBooking.getStallNumber(),
+                stall.getType(),
+                savedBooking.getCreatedDate()
+        );
+
+        // 8️⃣ SEND EVENT → booking_created
+        eventProducer.send(
+                BookingEventFactory.bookingCreatedEvent(savedBooking, user, stall, qr)
+        );
 
         return savedBooking;
     }
 
+    // --------------------------------------------------------
+    //  GET ONE BOOKING
+    // --------------------------------------------------------
     public Optional<Booking> getBookingById(UUID id) {
         return bookingRepo.findById(id);
     }
 
+    // --------------------------------------------------------
+    //  GET ALL BOOKINGS
+    // --------------------------------------------------------
     public List<Booking> getAllBookings() {
         return bookingRepo.findAll();
     }
 
+    // --------------------------------------------------------
+    //  DELETE BOOKING
+    // --------------------------------------------------------
     @Transactional
     public boolean deleteBooking(UUID id) {
-        if (bookingRepo.existsById(id)) {
-            Booking booking = bookingRepo.findById(id).orElse(null);
-            if (booking != null) {
-                // decrease user's active stalls if needed
-                UserResponseDTO user = userClient.getUserById(booking.getUserId());
-                if (user != null && user.getActiveNumberOfStalls() > 0) {
-                    userClient.updateActiveStalls(user.getUserId(), user.getActiveNumberOfStalls() - 1);
-                }
 
-                // make stall available again
-                Stall stall = stallRepo.findByStallId(booking.getStallId()).orElse(null);
-                if (stall != null) {
-                    stall.setStatus("active");
-                    stallRepo.save(stall);
-                }
+        if (!bookingRepo.existsById(id))
+            return false;
 
-                bookingRepo.deleteById(id);
-                return true;
-            }
+        Booking booking = bookingRepo.findById(id).orElse(null);
+        if (booking == null)
+            return false;
+
+        UserResponseDTO user = userClient.getUserById(booking.getUserId());
+        Stall stall = stallRepo.findByStallId(booking.getStallId()).orElse(null);
+
+        // Stall cleanup
+        if (stall != null) {
+            stall.setStatus("active");
+            stallRepo.save(stall);
         }
-        return false;
+
+        // User stall count decrease
+        if (user != null && user.getActiveNumberOfStalls() > 0)
+            userClient.updateActiveStalls(user.getUserId(), user.getActiveNumberOfStalls() - 1);
+
+        bookingRepo.deleteById(id);
+
+        // SEND EVENT → booking_deleted
+        eventProducer.send(
+                BookingEventFactory.bookingDeletedEvent(booking, user, stall)
+        );
+
+        return true;
     }
 
+    // --------------------------------------------------------
+    //  UPDATE BOOKING
+    // --------------------------------------------------------
     @Transactional
-    public Optional<Booking> updateBooking(UUID id, Booking updatedData) {
+    public Optional<Booking> updateBooking(UUID id, Booking updated) {
+
         return bookingRepo.findById(id).map(existing -> {
-            // --- Update Booking fields ---
-            if (updatedData.getStatus() != null) {
-                existing.setStatus(updatedData.getStatus());
-            }
-            if (updatedData.getQrLink() != null) {
-                existing.setQrLink(updatedData.getQrLink());
-            }
-            if (updatedData.getStallNumber() != null) {
-                existing.setStallNumber(updatedData.getStallNumber());
-            }
-            if (updatedData.getModifiedBy() != null) {
-                existing.setModifiedBy(updatedData.getModifiedBy());
-            }
+
+            String oldStatus = existing.getStatus();
+
+            if (updated.getStatus() != null)
+                existing.setStatus(updated.getStatus());
+
+            if (updated.getStallNumber() != null)
+                existing.setStallNumber(updated.getStallNumber());
+
+            if (updated.getQrLink() != null)
+                existing.setQrLink(updated.getQrLink());
+
+            existing.setModifiedBy(updated.getModifiedBy());
             existing.setModifiedDate(LocalDateTime.now());
 
-            // --- Save booking ---
-            Booking savedBooking = bookingRepo.save(existing);
+            Booking saved = bookingRepo.save(existing);
 
-            // --- Update stall status automatically ---
-            stallRepo.findByStallId(savedBooking.getStallId()).ifPresent(stall -> {
-                String newBookingStatus = savedBooking.getStatus().toLowerCase();
+            Stall stall = stallRepo.findByStallId(saved.getStallId()).orElse(null);
+            UserResponseDTO user = userClient.getUserById(saved.getUserId());
 
-                switch (newBookingStatus) {
-                    case "booked" -> stall.setStatus("booked");
-                    case "canceled", "expired" -> stall.setStatus("active");
-                    default -> { /* no change */ }
-                }
+            // Stall status sync
+            if (stall != null) {
+                if ("booked".equalsIgnoreCase(saved.getStatus()))
+                    stall.setStatus("booked");
+                else if ("canceled".equalsIgnoreCase(saved.getStatus()))
+                    stall.setStatus("active");
 
                 stallRepo.save(stall);
-            });
-
-            // --- Update user's active stall count if needed ---
-            if (updatedData.getStatus() != null) {
-                try {
-                    UserResponseDTO user = userClient.getUserById(savedBooking.getUserId());
-                    if (user != null) {
-                        int currentCount = user.getActiveNumberOfStalls() == null ? 0 : user.getActiveNumberOfStalls();
-
-                        if (updatedData.getStatus().equalsIgnoreCase("canceled") && currentCount > 0) {
-                            userClient.updateActiveStalls(user.getUserId(), currentCount - 1);
-                        } else if (updatedData.getStatus().equalsIgnoreCase("booked") && currentCount < 3) {
-                            userClient.updateActiveStalls(user.getUserId(), currentCount + 1);
-                        }
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to sync active stall count with user service", e);
-                }
             }
 
-            return savedBooking;
+            // User stall counter sync
+            if (updated.getStatus() != null && user != null) {
+
+                int count = user.getActiveNumberOfStalls();
+
+                if (updated.getStatus().equalsIgnoreCase("canceled") && count > 0)
+                    userClient.updateActiveStalls(user.getUserId(), count - 1);
+
+                if (updated.getStatus().equalsIgnoreCase("booked") && count < 3)
+                    userClient.updateActiveStalls(user.getUserId(), count + 1);
+            }
+
+
+
+            QRVerification qrVerification = qrVerificationService
+                    .getByBooking(saved.getId())
+                    .orElse(null);
+
+            eventProducer.send(
+                    BookingEventFactory.bookingUpdatedEvent(saved, user, stall, qrVerification)
+            );
+
+            return saved;
         });
     }
 }
