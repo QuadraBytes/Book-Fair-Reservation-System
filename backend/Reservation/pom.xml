@@ -119,8 +119,6 @@
             <scope>runtime</scope>
         </dependency>
 
-    </dependencies>
-
 		<!-- Shared Avro classes -->
 		<dependency>
 			<groupId>com.QuadraBytes.Book-Fair-Reservation-System</groupId>
