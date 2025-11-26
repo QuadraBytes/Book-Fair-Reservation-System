@@ -38,7 +38,7 @@ public class AdminController {
 
     // Get one Admin
     @GetMapping("/{id}")
-    public ResponseEntity<AdminResponseDTO> getOne(@PathVariable UUID id) {
+    public ResponseEntity<AdminResponseDTO> getOne(@PathVariable("id") UUID id) {
         return adminService.getAdminById(id)
                 .map(AdminResponseDTO::from)
                 .map(ResponseEntity::ok)
@@ -56,7 +56,7 @@ public class AdminController {
 
     // Update Admin
     @PutMapping("/{id}")
-    public ResponseEntity<AdminResponseDTO> update(@PathVariable UUID id,
+    public ResponseEntity<AdminResponseDTO> update(@PathVariable("id") UUID id,
                                                 @Valid @RequestBody UpdateAdminRequestDTO req) {
         return adminService.updateAdmin(id, req.toEntity())
                 .map(AdminResponseDTO::from)
@@ -65,7 +65,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         boolean deleted = adminService.deleteAdmin(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

@@ -29,7 +29,7 @@ public class UserDetailsController {
 
     // Get details by id
     @GetMapping("/{id}")
-    public ResponseEntity<UserDetails> getOne(@PathVariable UUID id) {
+    public ResponseEntity<UserDetails> getOne(@PathVariable("id") UUID id) {
         return userDetailsService.getDetailsById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -37,7 +37,7 @@ public class UserDetailsController {
 
     // Get details by userId
     @GetMapping("/user/{userId}")
-    public ResponseEntity<UserDetails> getByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<UserDetails> getByUserId(@PathVariable("id") UUID userId) {
         return userDetailsService.getDetailsByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -51,7 +51,7 @@ public class UserDetailsController {
 
     // Update user details
     @PutMapping("/{id}")
-    public ResponseEntity<UserDetails> update(@PathVariable UUID id,
+    public ResponseEntity<UserDetails> update(@PathVariable("id") UUID id,
                                               @RequestBody UserDetails updated) {
         return userDetailsService.updateUserDetails(id, updated)
                 .map(ResponseEntity::ok)
@@ -60,7 +60,7 @@ public class UserDetailsController {
 
     // Delete user details
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         boolean deleted = userDetailsService.deleteUserDetails(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
