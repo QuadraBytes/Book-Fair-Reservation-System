@@ -42,6 +42,7 @@ export default function AdminLayout({
                 {navItem("/admin/matrix", "Dashboard")}
                 {navItem("/admin/event-map", "Event Map")}
                 {navItem("/admin/users", "Users")}
+                {navItem("/admin/pending-requests", "Pending Requests")}
               </div>
             </div>
           </div>
