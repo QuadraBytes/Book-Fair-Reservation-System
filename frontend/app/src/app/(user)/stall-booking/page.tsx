@@ -4,6 +4,8 @@ import Header from "@/components/header";
 import StallMap from "@/components/stallMap";
 import { DEFAULT_STALL_CONFIGS } from "@/components/stallData";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+
 
 const StallBookingPage = () => {
   const [selectedStallIds, setSelectedStallIds] = useState<string[]>([]);
@@ -29,7 +31,7 @@ const StallBookingPage = () => {
 
   const handleBooking = () => {
     if (selectedStallIds.length === 0) {
-      alert("Please select at least one stall");
+      toast.error("Please select at least one stall");
       return;
     }
 
@@ -40,7 +42,7 @@ const StallBookingPage = () => {
       })
       .join(", ");
 
-    alert(`Booking stalls: ${stallDetails}`);
+    toast.success(`Booking stalls: ${stallDetails}`);
   };
 
   return (

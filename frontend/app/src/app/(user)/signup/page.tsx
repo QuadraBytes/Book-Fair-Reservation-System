@@ -6,14 +6,63 @@ import { useRouter } from "next/navigation";
 
 const SignUpPage: React.FC = () => {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");   // NEW FIELD
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", { email, password, confirmPassword });
-    router.replace("/stall-booking");
+
+    // === Frontend Validation ===
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    // === API Request ===
+    try {
+      const response = await fetch("http://173.249.12.92:9080/users-service/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          password
+        })
+      });
+
+      const text = await response.text();
+      let data = null;
+
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch (err) {
+        console.error("Invalid JSON from server:", text);
+      }
+
+      if (!response.ok) {
+        console.error("Signup failed:", data || text);
+        alert((data && data.message) || "Signup failed. Try again.");
+        return;
+      }
+
+      console.log("Signup success:", data);
+      alert("Account created successfully!");
+      router.replace("/login");
+
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("Something went wrong, please try again later.");
+    }
   };
 
   return (
@@ -42,57 +91,66 @@ const SignUpPage: React.FC = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            
+            {/* Username */}
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="email"
-                className="text-base font-normal text-gray-800"
-              >
+              <label htmlFor="username" className="text-base text-gray-800">
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none focus:border-orange-700"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                autoComplete="username"
+              />
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-base text-gray-800">
                 Email
               </label>
               <input
                 type="email"
                 id="email"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none focus:border-orange-700"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
               />
             </div>
 
+            {/* Password */}
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="password"
-                className="text-base font-normal text-gray-800"
-              >
+              <label htmlFor="password" className="text-base text-gray-800">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none focus:border-orange-700"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="new-password"
               />
+              <p className="text-xs text-gray-500">Minimum 8 characters</p>
             </div>
 
+            {/* Confirm Password */}
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="confirmPassword"
-                className="text-base font-normal text-gray-800"
-              >
+              <label htmlFor="confirmPassword" className="text-base text-gray-800">
                 Confirm Password
               </label>
               <input
                 type="password"
                 id="confirmPassword"
-                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none transition-colors duration-300 focus:border-orange-700"
+                className="rounded-full border border-gray-300 bg-white px-5 py-3.5 text-base outline-none focus:border-orange-700"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                autoComplete="new-password"
               />
             </div>
 
@@ -104,11 +162,12 @@ const SignUpPage: React.FC = () => {
               Already have an account?{" "}
               <a
                 href="/login"
-                className="font-medium text-orange-700 no-underline transition-colors duration-300 hover:text-orange-800 hover:underline"
+                className="font-medium text-orange-700 hover:text-orange-800 hover:underline"
               >
                 Login
               </a>
             </p>
+
           </form>
         </div>
       </div>

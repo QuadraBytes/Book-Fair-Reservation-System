@@ -1,4 +1,5 @@
 "use client";
+import { Toaster } from "react-hot-toast";
 
 export default function PublicLayout({
   children,
@@ -8,6 +9,7 @@ export default function PublicLayout({
   return (
     <div>
       {children}
+      <Toaster />
     </div>
   );
 }

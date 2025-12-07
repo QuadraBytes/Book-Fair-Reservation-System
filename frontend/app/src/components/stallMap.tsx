@@ -221,11 +221,11 @@ const StallMap: React.FC<StallMapProps> = ({
             <span className="text-sm text-gray-700">Small Stall</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded"></div>
+            <div className="w-6 h-6 bg-purple-100 border-2 border-purple-200 rounded"></div>
             <span className="text-sm text-gray-700">Medium Stall</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-purple-100 border-2 border-purple-200 rounded"></div>
+            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded"></div>
             <span className="text-sm text-gray-700">Large Stall</span>
           </div>
 

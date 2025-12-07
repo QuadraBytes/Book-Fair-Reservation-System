@@ -3,17 +3,47 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Button from "@/components/button";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", { email, password });
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://173.249.12.92:9080/users-service/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usernameOrEmail: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Login failed:", data);
+      toast.error(data.message || "Invalid username or password");
+      return;
+    }
+
+    console.log("Login success:", data);
+
+    // If login success → redirect
     router.replace("/stall-booking");
-  };
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    toast.error("Something went wrong, please try again later.");
+  }
+};
+
 
   return (
     <div className="flex min-h-screen w-full">
