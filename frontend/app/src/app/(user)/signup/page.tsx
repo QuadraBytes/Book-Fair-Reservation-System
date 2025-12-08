@@ -13,7 +13,7 @@ const SignUpPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", { email, password, confirmPassword });
-    router.replace("/stallbooking");
+    router.replace("/stall-booking");
   };
 
   return (
