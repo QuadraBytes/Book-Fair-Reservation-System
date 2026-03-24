@@ -1,66 +1,64 @@
 "use client";
+import React from "react";
+import StallMap from "@/components/stallMap";
+import { DEFAULT_STALL_CONFIGS } from "@/components/stallData";
 
-import { useState } from "react";
+const AdminEventMapPage = () => {
+  const selectedStallIds = ["A3", "B1", "B4", "C2", "C5", "D3", "D5"];
+  const unavailableStallIds = ["A2", "A5", "B3", "C3", "C8", "D2", "D9"];
 
-const initialUnavailable = new Set([2, 6, 12, 18]);
-const initialSelected = new Set([9, 10]);
-
-export default function EventMapPage() {
-  const cols = 7;
-  const rows = 5;
-
-  const [unavailable] = useState<Set<number>>(initialUnavailable);
-  const [selected, setSelected] = useState<Set<number>>(initialSelected);
-
-  function toggleCell(index: number) {
-    if (unavailable.has(index)) return;
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
-  }
+  const totalStalls = DEFAULT_STALL_CONFIGS.length;
+  const availableCount =
+    totalStalls - selectedStallIds.length - unavailableStallIds.length;
+  const bookedCount = selectedStallIds.length;
+  const notAvailableCount = unavailableStallIds.length;
 
   return (
-    <section className="p-12 bg-gradient-to-br from-orange-50 to-pink-50">
-      <h3 className="text-center text-2xl font-serif mb-8">Event Map</h3>
-
-      <div className="max-w-4xl mx-auto rounded-2xl bg-white p-8 shadow-[0_20px_60px_rgba(255,122,0,0.12)]">
-        <div className="grid grid-cols-7 gap-4 p-6 bg-white rounded-lg">
-          {Array.from({ length: cols * rows }).map((_, i) => {
-            const isUnavailable = unavailable.has(i);
-            const isSelected = selected.has(i);
-            const cls = isUnavailable
-              ? "bg-black"
-              : isSelected
-              ? "bg-orange-600"
-              : "bg-gray-200";
-            return (
-              <div
-                key={i}
-                onClick={() => toggleCell(i)}
-                className={`${cls} h-12 w-12 rounded-md cursor-pointer`}
-              />
-            );
-          })}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-pink-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-light text-gray-800 font-serif mb-2">
+            Event Map Overview
+          </h1>
+          <p className="text-gray-600">View the current status of all stalls</p>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-orange-600 rounded-sm" />
-            <span>Selected</span>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Total Stalls</div>
+            <div className="text-3xl font-bold text-gray-800">
+              {totalStalls}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-black rounded-sm" />
-            <span>Not Available</span>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Available</div>
+            <div className="text-3xl font-bold text-green-600">
+              {availableCount}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-gray-200 rounded-sm" />
-            <span>Available</span>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Booked</div>
+            <div className="text-3xl font-bold text-orange-600">
+              {bookedCount}
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-gray-600 text-sm mb-2">Not Available</div>
+            <div className="text-3xl font-bold text-gray-800">
+              {notAvailableCount}
+            </div>
           </div>
         </div>
+
+        <StallMap
+          selectedStallIds={selectedStallIds}
+          unavailableStallIds={unavailableStallIds}
+          showLegend={true}
+          readonly={true}
+        />
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+export default AdminEventMapPage;
