@@ -1,12 +1,10 @@
 package com.QuadraBytes.Book_Fair_Reservation_System.Reservation.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +27,17 @@ public class Stall {
     private String stallNumber;
 
     @Column(nullable = false)
-    private String status = "active"; // default active
+    private String status = "active";
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
+
+    @Column(name = "modified_date")
+    private LocalDateTime modifiedDate;
 }

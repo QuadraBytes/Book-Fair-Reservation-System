@@ -29,12 +29,6 @@ public class Booking {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
     @Column(nullable = false)
     private String status; // e.g. "booked" or "not"
 
@@ -43,4 +37,16 @@ public class Booking {
 
     @Column(name = "qr_link")
     private String qrLink;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "modified_date")
+    private LocalDateTime modifiedDate;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
 }

@@ -45,5 +45,5 @@ public class User {
     private LocalDateTime modifiedDate;
 
     @Column(name = "active_number_of_stalls")
-    private Integer activeNumberOfStalls;
+    private Integer activeNumberOfStalls = 0;
 }
